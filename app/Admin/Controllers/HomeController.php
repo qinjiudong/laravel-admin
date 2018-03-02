@@ -80,13 +80,13 @@ class HomeController extends Controller
                 });
 
                 $row->column(6, function (Column $column) {
-                    $sql = 'select create_date,money from qjd order by id desc limit 10';
+                    $sql = 'select sum(money) m,DATE_FORMAT(create_date,"%Y-%m-%d") d from qjd GROUP BY DATE_FORMAT(create_date,"%Y-%m-%d") ORDER BY d desc limit 10';
                     $res = DB::select($sql);
                     $data = [];
                     $head = [];
                     foreach ($res as $key => $v) {
-                        $data[] = -$v->money;
-                        $head[] = $v->create_date;
+                        $data[] = -$v->m;
+                        $head[] = $v->d;
                     }
 
                     $collapse = new Collapse();
