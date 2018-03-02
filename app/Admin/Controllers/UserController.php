@@ -79,6 +79,9 @@ class UserController extends Controller
             $grid->pay_type('type');
             $grid->remark('remark');
             $grid->disableActions();
+            $grid->disableExport();
+            $grid->disableRowSelector();
+            $grid->disableFilter();
         });
     }
 
