@@ -47,6 +47,13 @@ class HomeController extends Controller
             $res = DB::select($sql);
             if($res)
                 $data['本月'] = $res['0']->total;
+
+            $last_month = date('Y-m',(strtotime(date('Y-m-01 00:00:00')) - 60));
+            $sql = 'select sum(money) total from qjd where DATE_FORMAT(create_date,"%Y-%m")="'.$last_month.'"';
+            $res = DB::select($sql);
+            if($res)
+                $data['上月'] = $res['0']->total;
+
             $content->row(function ($row) use($data) {
                 $row->column(3, new InfoBox('总计', 'file', 'red', '', $data['总计']));
                 $row->column(3, new InfoBox('本月', 'file', 'red', '', $data['本月']));
