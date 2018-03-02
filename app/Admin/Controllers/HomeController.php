@@ -29,18 +29,50 @@ class HomeController extends Controller
 
             $content->header('HOME');
             $content->description('统计...');
-            $a = 111;
-            $content->row(function ($row) {
-                $row->column(3, new InfoBox('总计', 'file', 'red', '', '1024'));
-                $row->column(3, new InfoBox('本月', 'file', 'red', '', '1024'));
-                $row->column(3, new InfoBox('当天', 'file', 'red', '', '1024'));
-                $row->column(3, new InfoBox('上月', 'file', 'red', '', '1024'));
+            $data = [
+                '总计'=>'0',
+                '本月'=>'0',
+                '当天'=>'0',
+                '上月'=>'0',
+            ];
+            $sql = 'select sum(money) total from qjd';
+            $res = DB::select($sql);
+            if($res)
+                $data['总计'] = $res['0']->total;
+            $sql = 'select sum(money) total from qjd where DATE_FORMAT(create_date,"%Y-%m-%d")="'.date('Y-m-d').'"';
+            $res = DB::select($sql);
+            if($res)
+                $data['当天'] = $res['0']->total;
+            $sql = 'select sum(money) total from qjd where DATE_FORMAT(create_date,"%Y-%m")="'.date('Y-m').'"';
+            $res = DB::select($sql);
+            if($res)
+                $data['本月'] = $res['0']->total;
+            $content->row(function ($row) use($data) {
+                $row->column(3, new InfoBox('总计', 'file', 'red', '', $data['总计']));
+                $row->column(3, new InfoBox('本月', 'file', 'red', '', $data['本月']));
+                $row->column(3, new InfoBox('当天', 'file', 'red', '', $data['当天']));
+                $row->column(3, new InfoBox('上月', 'file', 'red', '', $data['上月']));
             });
 
             $content->row(function (Row $row) {
 
-                $row->column(12, function (Column $column) {
+                $row->column(6, function (Column $column) {
+                    $sql = 'select create_date,money from qjd order by id desc limit 10';
+                    $res = DB::select($sql);
+                    $data = [];
+                    $head = [];
+                    foreach ($res as $key => $v) {
+                        $data[] = -$v->money;
+                        $head[] = $v->create_date;
+                    }
+                    
+                    $collapse = new Collapse();
+                    $bar = new Bar($head,[['First', $data]]);
+                    $collapse->add('Bar', $bar);
+                    $column->append($collapse);
+                });
 
+                $row->column(6, function (Column $column) {
                     $sql = 'select create_date,money from qjd order by id desc limit 10';
                     $res = DB::select($sql);
                     $data = [];
@@ -51,34 +83,18 @@ class HomeController extends Controller
                     }
 
                     $collapse = new Collapse();
-
-                    $bar = new Bar(
-                        $head,
-                        [
-                            ['First', $data],
-                 
-                        ]
-                    );
+                    $bar = new Bar($head,[['First', $data]]);
                     $collapse->add('Bar', $bar);
-                    
                     $column->append($collapse);
-
-
                 });
-
-
-
             });
 
-            $headers = ['Id', 'Email', 'Name', 'Company', 'Last Login', 'Status'];
-            $rows = [
-                [1, 'labore21@yahoo.com', 'Ms. Clotilde Gibson', 'Goodwin-Watsica', '1997-08-13 13:59:21', 'open'],
-                [2, 'omnis.in@hotmail.com', 'Allie Kuhic', 'Murphy, Koepp and Morar', '1988-07-19 03:19:08', 'blocked'],
-                [3, 'quia65@hotmail.com', 'Prof. Drew Heller', 'Kihn LLC', '1978-06-19 11:12:57', 'blocked'],
-                [4, 'xet@yahoo.com', 'William Koss', 'Becker-Raynor', '1988-09-07 23:57:45', 'open'],
-                [5, 'ipsa.aut@gmail.com', 'Ms. Antonietta Kozey Jr.', 'Braun Ltd', '2013-10-16 10:00:01', 'open'],
-            ];
-
+            $headers = ['id', 'num', 'date'];
+            $rows = [];
+            $sql = 'select id,money,create_date from qjd order by id desc limit 5';
+            $res = DB::select($sql);
+            if($res)
+                $rows = $res;
             $content->row((new Box('Table', new Table($headers, $rows)))->style('info')->solid());
         });
     }
