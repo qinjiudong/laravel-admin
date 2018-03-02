@@ -18,85 +18,55 @@ use Encore\Admin\Widgets\Collapse;
 use Encore\Admin\Widgets\InfoBox;
 use Encore\Admin\Widgets\Tab;
 use Encore\Admin\Widgets\Table;
+use DB;
 
 class HomeController extends Controller
 {
     public function index()
     {
+
         return Admin::content(function (Content $content) {
 
-            $content->header('Dashboard');
-            $content->description('Description...');
-
+            $content->header('HOME');
+            $content->description('统计...');
+            $a = 111;
             $content->row(function ($row) {
-                $row->column(3, new InfoBox('New Users', 'users', 'aqua', '/admin/users', '1024'));
-                $row->column(3, new InfoBox('New Orders', 'shopping-cart', 'green', '/admin/orders', '150%'));
-                $row->column(3, new InfoBox('Articles', 'book', 'yellow', '/admin/articles', '2786'));
-                $row->column(3, new InfoBox('Documents', 'file', 'red', '/admin/files', '698726'));
+                $row->column(3, new InfoBox('总计', 'file', 'red', '', '1024'));
+                $row->column(3, new InfoBox('本月', 'file', 'red', '', '1024'));
+                $row->column(3, new InfoBox('当天', 'file', 'red', '', '1024'));
+                $row->column(3, new InfoBox('上月', 'file', 'red', '', '1024'));
             });
 
             $content->row(function (Row $row) {
 
-                $row->column(6, function (Column $column) {
+                $row->column(12, function (Column $column) {
 
-                    $tab = new Tab();
-
-                    $pie = new Pie([
-                        ['Stracke Ltd', 450], ['Halvorson PLC', 650], ['Dicki-Braun', 250], ['Russel-Blanda', 300],
-                        ['Emmerich-O\'Keefe', 400], ['Bauch Inc', 200], ['Leannon and Sons', 250], ['Gibson LLC', 250],
-                    ]);
-
-                    $tab->add('Pie', $pie);
-                    $tab->add('Table', new Table());
-                    $tab->add('Text', 'blablablabla....');
-
-                    $tab->dropDown([['Orders', '/admin/orders'], ['administrators', '/admin/administrators']]);
-                    $tab->title('Tabs');
-
-                    $column->append($tab);
+                    $sql = 'select create_date,money from qjd order by id desc limit 10';
+                    $res = DB::select($sql);
+                    $data = [];
+                    $head = [];
+                    foreach ($res as $key => $v) {
+                        $data[] = -$v->money;
+                        $head[] = $v->create_date;
+                    }
 
                     $collapse = new Collapse();
 
                     $bar = new Bar(
-                        ["January", "February", "March", "April", "May", "June", "July"],
+                        $head,
                         [
-                            ['First', [40,56,67,23,10,45,78]],
-                            ['Second', [93,23,12,23,75,21,88]],
-                            ['Third', [33,82,34,56,87,12,56]],
-                            ['Forth', [34,25,67,12,48,91,16]],
+                            ['First', $data],
+                 
                         ]
                     );
                     $collapse->add('Bar', $bar);
-                    $collapse->add('Orders', new Table());
+                    
                     $column->append($collapse);
 
-                    $doughnut = new Doughnut([
-                        ['Chrome', 700],
-                        ['IE', 500],
-                        ['FireFox', 400],
-                        ['Safari', 600],
-                        ['Opera', 300],
-                        ['Navigator', 100],
-                    ]);
-                    $column->append((new Box('Doughnut', $doughnut))->removable()->collapsable()->style('info'));
+
                 });
 
-                $row->column(6, function (Column $column) {
 
-                    $column->append(new Box('Radar', new Radar()));
-
-                    $polarArea = new PolarArea([
-                        ['Red', 300],
-                        ['Blue', 450],
-                        ['Green', 700],
-                        ['Yellow', 280],
-                        ['Black', 425],
-                        ['Gray', 1000],
-                    ]);
-                    $column->append((new Box('Polar Area', $polarArea))->removable()->collapsable());
-
-                    $column->append((new Box('Line', new Line()))->removable()->collapsable()->style('danger'));
-                });
 
             });
 
