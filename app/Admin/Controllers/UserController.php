@@ -73,7 +73,7 @@ class UserController extends Controller
     {
         return Admin::grid(User::class, function (Grid $grid) {
             $grid->model()->orderBy('id', 'desc');
-            $grid->id('ID');
+            $grid->id('id');
             $grid->money('num');
             $grid->create_date('date');
             $grid->pay_type('type');
