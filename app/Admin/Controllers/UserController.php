@@ -90,10 +90,9 @@ class UserController extends Controller
     protected function form()
     {
         return Admin::form(User::class, function (Form $form) {
-            $form->display('id', 'ID');
-			// $form->date('create_date','日期')->format('YYYY-MM-DD');
+            $form->display('id', '编号');
             $form->datetime('create_date','日期')->format('YYYY-MM-DD HH:mm:ss');
-			$form->number('money','数量');
+			$form->currency('money','数量')->symbol('￥');
             $form->radio('pay_type','类型')->options(['支付宝' => '支付宝', '银行卡'=> '银行卡','现金'=>'现金'])->default('支付宝');
             $form->text('remark','备注');
         });
