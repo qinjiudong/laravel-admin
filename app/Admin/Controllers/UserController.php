@@ -82,6 +82,7 @@ class UserController extends Controller
             $grid->disableExport();
             $grid->disableRowSelector();
             $grid->disableFilter();
+            $grid->disablePagination();
         });
     }
 
