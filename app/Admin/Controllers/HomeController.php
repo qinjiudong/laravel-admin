@@ -42,11 +42,11 @@ class HomeController extends Controller
             $sql = 'select sum(money) total from qjd where DATE_FORMAT(create_date,"%Y-%m-%d")="'.date('Y-m-d').'"';
             $res = DB::select($sql);
             if($res)
-                $data['当天'] = $res['0']->total;
+                $data['当天'] = $res['0']->total ? $res['0']->total : '0';
             $sql = 'select sum(money) total from qjd where DATE_FORMAT(create_date,"%Y-%m")="'.date('Y-m').'"';
             $res = DB::select($sql);
             if($res)
-                $data['本月'] = $res['0']->total;
+                $data['本月'] = $res['0']->total ? $res['0']->total : '0';
 
             $last_month = date('Y-m',(strtotime(date('Y-m-01 00:00:00')) - 60));
             $sql = 'select sum(money) total from qjd where DATE_FORMAT(create_date,"%Y-%m")="'.$last_month.'"';
@@ -55,10 +55,10 @@ class HomeController extends Controller
                 $data['上月'] = $res['0']->total;
 
             $content->row(function ($row) use($data) {
-                $row->column(3, new InfoBox('总计', 'file', 'red', '', $data['总计']));
-                $row->column(3, new InfoBox('本月', 'file', 'red', '', $data['本月']));
                 $row->column(3, new InfoBox('当天', 'file', 'red', '', $data['当天']));
+                $row->column(3, new InfoBox('本月', 'file', 'red', '', $data['本月']));
                 $row->column(3, new InfoBox('上月', 'file', 'red', '', $data['上月']));
+                $row->column(3, new InfoBox('总计', 'file', 'red', '', $data['总计']));
             });
 
             $content->row(function (Row $row) {
