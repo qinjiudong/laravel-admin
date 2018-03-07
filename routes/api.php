@@ -19,5 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::any('webhook',function(Request $request){
 	// file_get_contents('php://input');
-	\Log::info(file_get_contents('php://input'));
+	$res = shell_exec('pwd');
+	\Log::info(file_get_contents($res);
 });
