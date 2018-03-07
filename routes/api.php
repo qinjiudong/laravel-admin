@@ -18,5 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::any('webhook',function(Request $request){
-	return 1111111;
+	// file_get_contents('php://input');
+	\Log::info(file_get_contents('php://input'));
 });
