@@ -20,3 +20,5 @@
 - [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
 ## 更新记录
+
+- 2017-03-07 自动部署
