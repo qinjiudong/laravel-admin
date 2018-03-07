@@ -89,7 +89,7 @@
                 <div class="links">
                     <a href="">Documentation</a>
                     <a href="">Laracasts</a>
-                    <a href="">News</a>
+                    <a href="admin">Admin</a>
                     <a href="">Forge</a>
                     <a href="">GitHub</a>
                 </div>
