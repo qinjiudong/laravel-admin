@@ -77,12 +77,12 @@ class UserController extends Controller
             $grid->money('num');
             $grid->create_date('date');
             $grid->pay_type('type');
-            // $grid->remark('remark');
             $grid->disableActions();
             $grid->disableExport();
             $grid->disableRowSelector();
             $grid->disableFilter();
             $grid->disablePagination();
+            $grid->model()->take(15);
         });
     }
 
