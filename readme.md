@@ -7,18 +7,28 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-## Laravel Framework 5.4.36
+## 软件环境
 
-集成laravel-admin:
+- PHP 5.6.33
+- Laravel Framework 5.4.36
+- MySQL 5.7.21
+- nginx/1.12.2
+- laravel-admin "1.4.*"
+- CentOS Linux release 7.4.1708 (Core)
+- 部署位置 阿里云ECS（华东2）
+- 数据库位置 阿里云ECS（华东2）
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 安装方式
 
-## 更新记录
+- git clone 拉取
+- 复制 .env文件
+- 修改配置
+- composer install
 
-- 2017-03-07 自动部署
+## 开始日期
+
+- 2017-03-01正式开始
+
+## 功能更新
+
+- 2017-03-07 加入自动部署
