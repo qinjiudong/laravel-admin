@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::any('webhook',function(Request $request){
-	//  file_get_contents('php://input');//
+	//  file_get_contents('php://input');2
 	$res[] = shell_exec('whoami');
 	$res[] = shell_exec('cd /www/bill_admin && git pull');
 	\Log::info($res);
